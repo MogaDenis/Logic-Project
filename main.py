@@ -97,3 +97,18 @@ def successive_divisions_conversion(number, final_base):
         number //= final_base
         result = auxiliary.characters[remainder] + result
     return result
+
+
+def rapid_conversions_method(number, initial_base, final_base):
+    """
+
+    :param number:
+    :param initial_base:
+    :param final_base:
+    :return:
+    """
+
+    conversions = {
+    #   10      2      4      8    16
+
+    }
