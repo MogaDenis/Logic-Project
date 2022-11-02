@@ -1,6 +1,6 @@
 import auxiliary
 
-# TODO - additions(done), subtractions(done), multiplications(done) and divisions by one digit
+# TODO - additions(done), subtractions(done), multiplications(done) and divisions by one digit(done)
 # TODO - conversions by successive division(almost done), substitution method, rapid conversion
 
 
@@ -29,17 +29,22 @@ def add_numbers_in_a_base(number1, number2, base):
     :return: String having the digits of the sum of the two numbers in the given base.
     """
 
+    # This string will contain the result of the addition
     result = ""
 
     i = len(number1) - 1
     j = len(number2) - 1
 
+    # This is the carry digit
     carry = 0
 
+    # The addition will take place similarly to a merge
     while i >= 0 and j >= 0:
+        # Extract the decimal value of the digits to be added
         digit1 = auxiliary.characters.index(number1[i])
         digit2 = auxiliary.characters.index(number2[j])
 
+        # Calculate the sum of digits and also add the carry
         sum_of_digits = digit1 + digit2 + carry
 
         new_digit = sum_of_digits % base
@@ -243,6 +248,43 @@ def multiplication_with_one_digit(number, factor, base):
         product = '-' + product
 
     return product
+
+
+def division_by_one_digit(number, divider, base):
+    """
+
+    :param number:
+    :param divider:
+    :param base:
+    :return:
+    """
+
+    quotient = ""
+    remainder = ""
+
+    first_division = True
+
+    transport = '0'
+
+    divider_decimal = auxiliary.characters.index(divider)
+
+    for i in range(len(number)):
+        digit1 = auxiliary.characters.index(transport)
+        digit2 = auxiliary.characters.index(number[i])
+
+        dividend_decimal = digit1 * base + digit2
+
+        if not first_division or dividend_decimal >= divider_decimal:
+
+            quotient += str(auxiliary.characters[dividend_decimal // divider_decimal])
+
+        first_division = False
+
+        transport = str(auxiliary.characters[dividend_decimal % divider_decimal])
+
+    remainder = transport
+
+    return quotient, remainder
 
 
 def successive_divisions_conversion(number, final_base):
