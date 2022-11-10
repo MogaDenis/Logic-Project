@@ -4,7 +4,7 @@ import auxiliary
 # TODO - conversions by successive divisions(done), substitution method(done), rapid conversions(done)
 
 
-def check_if_valid_base(number, base):
+def check_if_valid_representation(number, base):
     """
     This function checks if a given number is correctly represented in the given base. (Checks if there are digits that
     are not available in the given base)

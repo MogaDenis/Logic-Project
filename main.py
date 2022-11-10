@@ -20,34 +20,60 @@ def print_sub_menu1():
         calculations part from which the user can choose.
     """
 
-    print("\nWhat would you like to do?\n")
-    print("1 - Add two numbers in a base.")
-    print("2 - Subtract two numbers in a base.")
-    print("3 - Multiply a number by a digit in a base.")
-    print("4 - Divide a number by a digit in a base.")
-    print("0 - Return to the main menu.\n")    
+    print("\n\tWhat would you like to do?\n")
+    print("\t1 - Add two numbers in a base.")
+    print("\t2 - Subtract two numbers in a base.")
+    print("\t3 - Multiply a number by a digit in a base.")
+    print("\t4 - Divide a number by a digit in a base.")
+    print("\t0 - Return to the main menu.\n")    
 
 
-def take_input_and_check_if_valid_option(list_of_options):
+def print_sub_menu2():
     """
-        This function requires the user to input and option and checks if it is a valid one.
-
-        The user is required to enter inputs until he enters a valid one.
-    Args:
-        list_of_options (List of strings): This list contains the valid options the user can choose from.
-
-    Returns:
-        String: The valid option chose by the user
+        This function prints to the console the options inside the sub menu corresponding to the 
+        calculations part from which the user can choose.
     """
-    
-    user_option = input("Your choice is: ")
 
-    while user_option not in list_of_options:
-        print("\nInvalid input!\n")
+    print("\n\tWhat would you like to do?\n")
+    print("\t1 - Convert a number between to bases using Successive Division Method.")
+    print("\t2 - Convert a number between to bases using Substitution Method.")
+    print("\t3 - Convert a number between to bases using Rapid Conversions Method.")
+    print("\t0 - Return to the main menu.\n") 
 
-        user_option = input("Your choice is: ")
 
-    return user_option
+def read_base_and_two_numbers(restriction=False):
+
+    base = input("Please enter the base: ")
+
+    while not base.isnumeric() or base == '1':
+        print("Invalid input! The base must be a positive integer greater than 1!")
+        base = input("Please enter the base: ")
+
+    base = int(base)
+
+    number1 = input("Please enter the first number: ").upper()
+
+    while not implementations.check_if_valid_representation(number1, base):
+        print(f"Invalid input! The number given can't be written in base {base}!")
+        number1 = input("Please enter the first number: ").upper()
+
+    message = "Please enter the second number: "
+
+    if restriction:
+        message = "Please enter a digit: "
+
+    number2 = input(message).upper()
+
+    while not implementations.check_if_valid_representation(number2, base):
+        print(f"Invalid input! The number given can't be written in base {base}!")
+        number2 = input(message).upper()
+
+    if restriction:
+        while len(number2) != 1:
+            print("Invalid input! The second number must be a single digit!")
+            number2 = input(message).upper()
+
+    return base, number1, number2
 
 
 def main():
@@ -61,38 +87,97 @@ def main():
         
         print_main_menu()
 
-        main_menu_option = take_input_and_check_if_valid_option(['0', '1', '2'])
+        main_menu_option = input("Your choice is: ")
 
         if main_menu_option == '1':
             # Perform calculations.
-            
-            sub_menu1_option = '-1'
 
-            while sub_menu1_option != '0':
+            while True:
                 print_sub_menu1()
 
-                sub_menu1_option = take_input_and_check_if_valid_option(['0', '1', '2', '3', '4'])
+                sub_menu1_option = input("Your choice is: ")
 
                 if sub_menu1_option == '1':
                     # Perform addition of two numbers. 
-                    pass
+                    
+                    base, number1, number2 = read_base_and_two_numbers()
+
+                    result = implementations.add_numbers_in_a_base(number1, number2, base)
+
+                    print(f"\n\t{number1}({base}) + {number2}({base}) = {result}({base})")
 
                 elif sub_menu1_option == '2':
                     # Perform subtraction of two numbers. 
-                    pass
+                    
+                    base, number1, number2 = read_base_and_two_numbers()
+
+                    result = implementations.subtract_numbers_in_a_base(number1, number2, base)
+
+                    print(f"\n\t{number1}({base}) - {number2}({base}) = {result}({base})")
 
                 elif sub_menu1_option == '3':
                     # Perform multiplication of a number by a digit.     
-                    pass 
+                    
+                    base, number1, number2 = read_base_and_two_numbers(restriction=True)
+
+                    result = implementations.multiplication_with_one_digit(number1, number2, base)
+
+                    print(f"\n\t{number1}({base}) * {number2}({base}) = {result}({base})")
 
                 elif sub_menu1_option == '4':
                     # Perform division of a number by a digit. 
-                    pass
+                    
+                    base, number1, number2 = read_base_and_two_numbers(restriction=True)
+
+                    quotient, remainder = implementations.division_by_one_digit(number1, number2, base)
+
+                    remainder_string = ""
+
+                    if remainder != '0':
+                        remainder_string = f"remainder {remainder}({base})"
+
+                    print(f"\n\t{number1}({base}) ÷ {number2}({base}) = {quotient}({base}) {remainder_string}")
+
+                elif sub_menu1_option == '0':
+                    break
+
+                else:
+                    print("\nInvalid input!")
             
 
         elif main_menu_option == '2':
             # Convert numbers
-            pass
+
+            while True:
+
+                sub_menu2_option = input("Your choice is: ")
+
+                if sub_menu2_option == '1':
+                    # Convert by successive divisions method
+                    # Allow it only if final base < initial base
+                    pass
+
+                elif sub_menu2_option == '2':
+                    # Convert by substitution method
+                    # Allow it only if final base > initial base
+                    pass
+
+                elif sub_menu2_option == '3':
+                    # Convert by rapid conversions. 
+                    # Allow it only if initial base and final base are in [2, 4, 8, 16]
+                    pass
+
+                elif sub_menu2_option == '0':
+                    break
+
+                else:
+                    print("\nInvalid input!")
+        
+        elif main_menu_option == '0':
+            break
+
+        else:
+            print("\nInvalid input!")
 
 
 main()
