@@ -33,10 +33,10 @@ def print_sub_menu2():
     """
 
     print("\n\tWhat would you like to do?\n")
-    print("\t1 - Convert a number between to bases using Successive Division Method.")
-    print("\t2 - Convert a number between to bases using Substitution Method.")
-    print("\t3 - Convert a number between to bases using Rapid Conversions Method.")
-    print("\t4 - Convert a number between to bases using base 10 as an intermediate base.")
+    print("\t1 - Convert a number between to bases using Successive Division Method. (initial base > destination base)")
+    print("\t2 - Convert a number between to bases using Substitution Method. (initial base < destination base)")
+    print("\t3 - Convert a number between to bases using Rapid Conversions Method. (initial and destination base must be 2, 4, 8 or 16)")
+    print("\t4 - Convert a number between to bases using base 10 as an intermediate base. (any bases between 2 and 16)")
     print("\t0 - Return to the main menu.\n") 
 
 
