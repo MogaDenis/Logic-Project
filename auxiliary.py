@@ -21,7 +21,7 @@ rapid_conversions_2_8 = {
 }
 
 rapid_conversions_2_16 = {
-    #   binary hex
+    #   binary  hex
     0: ['0000', '0'],
     1: ['0001', '1'],
     2: ['0010', '2'],

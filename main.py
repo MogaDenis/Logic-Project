@@ -1,5 +1,3 @@
-# TODO - construct a menu-driven application...
-
 import implementations
 
 
@@ -38,6 +36,7 @@ def print_sub_menu2():
     print("\t1 - Convert a number between to bases using Successive Division Method.")
     print("\t2 - Convert a number between to bases using Substitution Method.")
     print("\t3 - Convert a number between to bases using Rapid Conversions Method.")
+    print("\t4 - Convert a number between to bases using base 10 as an intermediate base.")
     print("\t0 - Return to the main menu.\n") 
 
 
@@ -45,8 +44,8 @@ def read_base_and_two_numbers(restriction=False):
 
     base = input("Please enter the base: ")
 
-    while not base.isnumeric() or base == '1':
-        print("Invalid input! The base must be a positive integer greater than 1!")
+    while not base.isnumeric() or base == '1' or int(base) > 16:
+        print("Invalid input! The base must be a positive integer greater than 1 and less than or equal to 16!")
         base = input("Please enter the base: ")
 
     base = int(base)
@@ -74,6 +73,33 @@ def read_base_and_two_numbers(restriction=False):
             number2 = input(message).upper()
 
     return base, number1, number2
+
+
+def read_number_and_two_bases():
+
+    initial_base = input("Please enter the base of the number you want to convert: ")
+
+    while not initial_base.isnumeric() or initial_base == '1' or int(initial_base) > 16:
+        print("\nInvalid input! The base must be a positive integer greater than 1 and less than or equal to 16!\n")
+        initial_base = input("Please enter the base of the number you want to convert: ")
+
+    initial_base = int(initial_base)
+
+    number = input("Please enter the number to convert: ").upper()
+
+    while not implementations.check_if_valid_representation(number, initial_base):
+        print(f"Invalid input! The number given can't be written in base {initial_base}!")
+        number = input("Please enter the first number: ").upper()
+
+    destination_base = input("Please enter the base in which you want to convert the given number: ")
+
+    while not destination_base.isnumeric() or destination_base == '1' or int(destination_base) > 16:
+        print("\nInvalid input! The base must be a positive integer greater than 1 and less than or equal to 16!\n")
+        destination_base = input("Please enter the base in which you want to convert the given number: ")
+
+    destination_base = int(destination_base)
+
+    return number, initial_base, destination_base
 
 
 def main():
@@ -149,23 +175,65 @@ def main():
             # Convert numbers
 
             while True:
+                print_sub_menu2()
 
                 sub_menu2_option = input("Your choice is: ")
 
                 if sub_menu2_option == '1':
                     # Convert by successive divisions method
-                    # Allow it only if final base < initial base
-                    pass
+                    # Allow it only if final base <= initial base
+                    
+                    number, initial_base, destination_base = read_number_and_two_bases()
+
+                    if initial_base >= destination_base:
+                        converted_number = implementations.successive_divisions_conversion_method(number, initial_base, destination_base)
+
+                        print(f"\n{number}({initial_base}) = {converted_number}({destination_base})")
+
+                    else:
+                        print("\nCan't perform the conversion. "
+                        "Successive divisions method is not recommended if the destination is greater than the initial base.")
 
                 elif sub_menu2_option == '2':
                     # Convert by substitution method
                     # Allow it only if final base > initial base
-                    pass
+                    
+                    number, initial_base, destination_base = read_number_and_two_bases()
+
+                    if initial_base <= destination_base:
+                        converted_number = implementations.substitution_conversion_method(number, initial_base, destination_base)
+
+                        print(f"\n{number}({initial_base}) = {converted_number}({destination_base})")
+
+                    else:
+                        print("\nCan't perform the conversion. "
+                        "Substitution method is not recommended if the destination is less than the initial base.")
 
                 elif sub_menu2_option == '3':
                     # Convert by rapid conversions. 
                     # Allow it only if initial base and final base are in [2, 4, 8, 16]
-                    pass
+                    
+                    number, initial_base, destination_base = read_number_and_two_bases()
+
+                    if initial_base in [2, 4, 8, 16] and destination_base in [2, 4, 8, 16]:
+                        converted_number = implementations.rapid_conversions(number, initial_base, destination_base)
+
+                        print(f"\n{number}({initial_base}) = {converted_number}({destination_base})")
+
+                    else:
+                        print("\nCan't perform the conversion. "
+                        "Rapid conversions method can be performed only if both bases are either 2, 4, 8 or 16.")
+
+                elif sub_menu2_option == '4':
+                    # Convert using 10 as an intermediate base.  
+
+                    number, initial_base, destination_base = read_number_and_two_bases()
+
+                    decimal_number = implementations.substitution_method_conversion_to_decimal(number, initial_base)
+
+                    converted_number = implementations.successive_divisions_conversion_from_decimal(decimal_number, destination_base)
+
+                    print(f"\n{number}({initial_base}) = {decimal_number}(10) = {converted_number}({destination_base})")
 
                 elif sub_menu2_option == '0':
                     break

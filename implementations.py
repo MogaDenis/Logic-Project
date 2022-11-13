@@ -1,8 +1,5 @@
 import auxiliary
 
-# TODO - additions(done), subtractions(done), multiplications(done) and divisions by one digit(done)
-# TODO - conversions by successive divisions(done), substitution method(done), rapid conversions(done)
-
 
 def check_if_valid_representation(number, base):
     """
