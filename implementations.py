@@ -289,6 +289,7 @@ def multiplication_with_one_digit(number, factor, base):
 
 def division_by_one_digit(number, divider, base):
     """
+    This function calculates the quotient and remainder obtained from the division of a number and a digit.
 
     :param number:
     :param divider:
