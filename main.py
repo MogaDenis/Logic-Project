@@ -1,13 +1,21 @@
 import implementations
 
+#################################################
+#   Made by Moga Denis-Andrei from Group 915.   # 
+#################################################
+
 
 def print_main_menu():
     """
         This function prints to the console the options inside the main menu from which the user can choose.
     """
 
+    print("""\n#################################################
+#   Made by Moga Denis-Andrei from Group 915.   # 
+#################################################.\n""")
+
     print("\nWhat would you like to do?\n")
-    print("1 - Perform calculations with positive integers.")
+    print("1 - Perform calculations with integers.")
     print("2 - Convert a number from a base to another using a certain method.")
     print("0 - Close the application.\n")
 
@@ -19,10 +27,10 @@ def print_sub_menu1():
     """
 
     print("\n\tWhat would you like to do?\n")
-    print("\t1 - Add two numbers in a base.")
+    print("\t1 - Add two numbers in a base.(Only positive integers)")
     print("\t2 - Subtract two numbers in a base.")
-    print("\t3 - Multiply a number by a digit in a base.")
-    print("\t4 - Divide a number by a digit in a base.")
+    print("\t3 - Multiply a number by a digit in a base.(The first term can be negative")
+    print("\t4 - Divide a number by a digit in a base.(The first term can be negative)")
     print("\t0 - Return to the main menu.\n")    
 
 
@@ -40,7 +48,15 @@ def print_sub_menu2():
     print("\t0 - Return to the main menu.\n") 
 
 
-def read_base_and_two_numbers(restriction=False):
+def read_base_and_two_numbers(restriction=False, division=False):
+    """
+        This function requires the user to input a numeration base between 2 and 16 and two numbers that can be represented in that base.
+        After the reading the values, they are checked to see if they are valid. 
+
+    :param restriction: Boolean value, True if we want the user to input for the second value only a digit, defaults to False
+    :param division: Boolean value, True if we want the user to input for the second value a non-zero value, defaults to False
+    :return: The base and the two numbers after validation. 
+    """
 
     base = input("Please enter the base: ")
 
@@ -72,10 +88,21 @@ def read_base_and_two_numbers(restriction=False):
             print("Invalid input! The second number must be a single digit!")
             number2 = input(message).upper()
 
+    if division:
+        while number2 == '0':
+            print("Invalid input! The second number must be a single non-zero digit!")
+            number2 = input(message).upper()
+
     return base, number1, number2
 
 
 def read_number_and_two_bases():
+    """
+        This function requires the user to input two numeration bases and a number that can be represented in the first numeration base.
+        After the reading the values, they are checked to see if they are valid. 
+
+    :return: The number and the two bases after validation. 
+    """
 
     initial_base = input("Please enter the base of the number you want to convert: ")
 
@@ -130,7 +157,7 @@ def main():
 
                     result = implementations.add_numbers_in_a_base(number1, number2, base)
 
-                    print(f"\n\t{number1}({base}) + {number2}({base}) = {result}({base})")
+                    print(f"\nThe result:\n\t{number1}({base}) + {number2}({base}) = {result}({base})")
 
                 elif sub_menu1_option == '2':
                     # Perform subtraction of two numbers. 
@@ -139,7 +166,7 @@ def main():
 
                     result = implementations.subtract_numbers_in_a_base(number1, number2, base)
 
-                    print(f"\n\t{number1}({base}) - {number2}({base}) = {result}({base})")
+                    print(f"\nThe result:\n\t{number1}({base}) - {number2}({base}) = {result}({base})")
 
                 elif sub_menu1_option == '3':
                     # Perform multiplication of a number by a digit.     
@@ -148,12 +175,12 @@ def main():
 
                     result = implementations.multiplication_with_one_digit(number1, number2, base)
 
-                    print(f"\n\t{number1}({base}) * {number2}({base}) = {result}({base})")
+                    print(f"\nThe result:\n\t{number1}({base}) * {number2}({base}) = {result}({base})")
 
                 elif sub_menu1_option == '4':
                     # Perform division of a number by a digit. 
                     
-                    base, number1, number2 = read_base_and_two_numbers(restriction=True)
+                    base, number1, number2 = read_base_and_two_numbers(restriction=True, division=True)
 
                     quotient, remainder = implementations.division_by_one_digit(number1, number2, base)
 
@@ -162,7 +189,7 @@ def main():
                     if remainder != '0':
                         remainder_string = f"remainder {remainder}({base})"
 
-                    print(f"\n\t{number1}({base}) ÷ {number2}({base}) = {quotient}({base}) {remainder_string}")
+                    print(f"\nThe result:\n\t{number1}({base}) ÷ {number2}({base}) = {quotient}({base}) {remainder_string}")
 
                 elif sub_menu1_option == '0':
                     break
@@ -203,7 +230,7 @@ def main():
                     if initial_base <= destination_base:
                         converted_number = implementations.substitution_conversion_method(number, initial_base, destination_base)
 
-                        print(f"\n{number}({initial_base}) = {converted_number}({destination_base})")
+                        print(f"\nThe result:\n{number}({initial_base}) = {converted_number}({destination_base})")
 
                     else:
                         print("\nCan't perform the conversion. "
@@ -218,7 +245,7 @@ def main():
                     if initial_base in [2, 4, 8, 16] and destination_base in [2, 4, 8, 16]:
                         converted_number = implementations.rapid_conversions(number, initial_base, destination_base)
 
-                        print(f"\n{number}({initial_base}) = {converted_number}({destination_base})")
+                        print(f"\nThe result:\n{number}({initial_base}) = {converted_number}({destination_base})")
 
                     else:
                         print("\nCan't perform the conversion. "
@@ -233,7 +260,7 @@ def main():
 
                     converted_number = implementations.successive_divisions_conversion_from_decimal(decimal_number, destination_base)
 
-                    print(f"\n{number}({initial_base}) = {decimal_number}(10) = {converted_number}({destination_base})")
+                    print(f"\nThe result:\n{number}({initial_base}) = {decimal_number}(10) = {converted_number}({destination_base})")
 
                 elif sub_menu2_option == '0':
                     break
@@ -248,4 +275,5 @@ def main():
             print("\nInvalid input!")
 
 
-main()
+if __name__ == "__main__":
+    main()

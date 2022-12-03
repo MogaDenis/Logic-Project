@@ -1,16 +1,20 @@
 import auxiliary
 
+#################################################
+#   Made by Moga Denis-Andrei from Group 915.   # 
+#################################################
+
 
 def check_if_valid_representation(number, base):
     """
-    This function checks if a given number is correctly represented in the given base. (Checks if there are digits that
+        This function checks if a given number is correctly represented in the given base. (Checks if there are digits that
     are not available in the given base)
 
     :return: True - if the representation is valid and False, otherwise
     """
 
     for digit in number:
-        if auxiliary.characters.index(digit) >= base:
+        if digit != '-' and auxiliary.characters.index(digit) >= base:
             return False
 
     return True
@@ -18,7 +22,7 @@ def check_if_valid_representation(number, base):
 
 def add_numbers_in_a_base(number1, number2, base):
     """
-    This function adds two numbers in a given base from 2 to 16.
+        This function adds two numbers in a given base from 2 to 16.
 
     :param number1: String
     :param number2: String
@@ -97,7 +101,7 @@ def add_numbers_in_a_base(number1, number2, base):
 
 def compare(number1, number2, base):
     """
-    This is a helper function which compares two numbers given in a certain base.
+        This is a helper function which compares two numbers given in a certain base.
 
     :param number1: String
     :param number2: String
@@ -137,7 +141,7 @@ def compare(number1, number2, base):
 
 def subtract_numbers_in_a_base(number1, number2, base):
     """
-    This function subtracts to numbers in a base from 2 to 16.
+        This function subtracts to numbers in a base from 2 to 16.
 
     :param number1: String
     :param number2: String
@@ -220,6 +224,8 @@ def subtract_numbers_in_a_base(number1, number2, base):
 
     while result[redundant_zeroes] == '0':
         redundant_zeroes += 1
+        if redundant_zeroes >= len(result):
+            break
 
     aux_result = result
     result = ""
@@ -233,13 +239,17 @@ def subtract_numbers_in_a_base(number1, number2, base):
     if swapped:
         result = '-' + result
 
+    # If the result string is empty at this point, then it means the result is 0.
+    if result == '':
+        result = '0'
+
     # Return the result of the subtraction as a string.
     return result
 
 
 def multiplication_with_one_digit(number, factor, base):
     """
-    This function calculates the product of two numbers in a given base. (One of the is composed by only one digit)
+        This function calculates the product of two numbers in a given base. (One of the is composed by only one digit)
 
     :param number: String
     :param factor: String (one digit)
@@ -268,35 +278,47 @@ def multiplication_with_one_digit(number, factor, base):
     carry = 0
 
     while i >= 0:
+        # Convert the current digit to decimal. 
         digit = auxiliary.characters.index(number[i])
 
+        # Multiply the current digit by the factor with which we multiply and add the carry. 
         product_of_digits = digit * decimal_factor + carry
 
+        # Add to the front of the product the newly obtained digit. 
         product = auxiliary.characters[product_of_digits % base] + product
 
+        # Compute the new carry. 
         carry = product_of_digits // base
 
         i -= 1
 
+    # Check if we have a transport digit. 
     if carry != 0:
         product = auxiliary.characters[carry] + product
 
+    # Check if the result of the multiplication is 0. (Multiplied by 0)
+    if product.count('0') == len(product):
+        product = '0'
+
+    # Add the minus sign only if the initial number was negative and the result is non-zero. 
     if negative:
-        product = '-' + product
+        if product != '0':
+            product = '-' + product
 
     return product
 
 
 def division_by_one_digit(number, divider, base):
     """
-    This function calculates the quotient and remainder obtained from the division of a number and a digit.
+        This function calculates the quotient and remainder obtained from the division of a number and a digit.
 
-    :param number:
-    :param divider:
-    :param base:
-    :return:
+    :param number: String
+    :param factor: String (one digit)
+    :param base: Integer representing the base in which the two numbers are given.
+    :return: Two strings, the first one being the quotient and the second one being the remainder obtained from the division. 
     """
 
+    # The results obtained from the division will be stored as strings. 
     quotient = ""
     remainder = ""
 
@@ -304,24 +326,33 @@ def division_by_one_digit(number, divider, base):
 
     transport = '0'
 
+    # Extract the decimal value from the digit with which we divide. 
     divider_decimal = auxiliary.characters.index(divider)
 
     for i in range(len(number)):
+        # Convert to decimal the transport and the current digit from the number. 
         digit1 = auxiliary.characters.index(transport)
         digit2 = auxiliary.characters.index(number[i])
 
+        # Compute the value that we have to divide. 
         dividend_decimal = digit1 * base + digit2
 
         if not first_division or dividend_decimal >= divider_decimal:
+            # If it is not the first division, then we can add the result to the quotient.
+            # This check is done in order to not add redundant zeroes at the front of the result. 
 
+            # Obtain one of the quotient's digits as the quotient obtained from dividing the current value with the divider. 
             quotient += str(auxiliary.characters[dividend_decimal // divider_decimal])
 
         first_division = False
-
+        
+        # Compute the transport digit as the modulus of the current value and the divider.  
         transport = str(auxiliary.characters[dividend_decimal % divider_decimal])
 
+    # The last transport digit is the final remainder. 
     remainder = transport
 
+    # If the quotient is empty, then the result is 0. 
     if quotient == '':
         quotient = '0'
 
@@ -330,7 +361,7 @@ def division_by_one_digit(number, divider, base):
 
 def successive_divisions_conversion_method(number, initial_base, final_base):
     """
-    This function takes as a parameter a string representing a number in a given base and returns a string of the digits of the same number
+        This function takes as a parameter a string representing a number in a given base and returns a string of the digits of the same number
     represented in a different base.
 
     This method can be applied only if the initial base is greater than the final base because this way we divide only by a single digit.
@@ -358,7 +389,7 @@ def successive_divisions_conversion_method(number, initial_base, final_base):
 
 def power(number, exponent, base):
     """
-    This function calculates the value of a given number raised to a given power in a certain base.
+        This function calculates the value of a given number raised to a given power in a certain base.
 
     :param number: String (a single digit) which is the representation of a number in a given base.
     :param exponent: Integer meaning of how many times do we have to multiply.
@@ -378,7 +409,7 @@ def power(number, exponent, base):
 
 def substitution_conversion_method(number, initial_base, final_base):
     """
-    This function takes as a parameter a string representing a number in a given base and returns a string of the digits of the same number
+        This function takes as a parameter a string representing a number in a given base and returns a string of the digits of the same number
     represented in a different base.
 
     This method can be applied only if the initial base is less than the final base because this way we only do multiplications by one digit.
@@ -415,7 +446,9 @@ def substitution_conversion_method(number, initial_base, final_base):
 
 def rapid_conversions(number, initial_base, final_base):
     """
-    
+        This function takes as parameters a number as a string and two bases as integers(2, 4, 8, 16) and performs the conversion of the given 
+    value from the initial base to the final base using rapid conversions. 
+        It uses base 2 as an intermediate base. 
 
     :param number: String which is the representation of a number in a given base.
     :param initial_base: Integer showing the base in which the given number is represented.
@@ -495,7 +528,7 @@ def rapid_conversions(number, initial_base, final_base):
 
 def successive_divisions_conversion_from_decimal(number, final_base):
     """
-    This function takes an integer in decimal as a parameter and returns as a string the representation of that number
+        This function takes an integer in decimal as a parameter and returns as a string the representation of that number
     in a given base.
 
     :param number: Integer
@@ -522,7 +555,7 @@ def successive_divisions_conversion_from_decimal(number, final_base):
 
 def substitution_method_conversion_to_decimal(number, initial_base):
     """
-    This function takes a string as a parameter representing the number given in the initial base and converts it to
+        This function takes a string as a parameter representing the number given in the initial base and converts it to
     decimal using the substitution method.
 
     :param number: String which is the representation of a number in a given base.
