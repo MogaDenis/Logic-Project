@@ -132,6 +132,9 @@ def compare(number1, number2, base):
             if digit1 < digit2:
                 return True
 
+            elif digit1 > digit2:
+                return False
+
             i += 1
             j += 1
 
@@ -322,6 +325,15 @@ def division_by_one_digit(number, divider, base):
     quotient = ""
     remainder = ""
 
+    # Check if the first character of the number to be divided is '-'.
+    negative = False
+
+    # If that's the case, then it means that the number is negative and if we multiply it with a positive digit it means
+    # that the result should be negative.
+    if number[0] == '-':
+        negative = True
+        number = number[1:]
+
     first_division = True
 
     transport = '0'
@@ -355,6 +367,9 @@ def division_by_one_digit(number, divider, base):
     # If the quotient is empty, then the result is 0. 
     if quotient == '':
         quotient = '0'
+
+    if negative and quotient != '0':
+        quotient = '-' + quotient
 
     return quotient, remainder
 
@@ -495,34 +510,38 @@ def rapid_conversions(number, initial_base, final_base):
     while number[0] == '0':
         number = number[1:]
 
-    # Add back some insignificant zeroes to the left of the number, if needed, so that we can make 'groups' of digits of the
-    # required length. 
-    while len(number) % required_digits != 0:
-        number = '0' + number
+    if final_base != 2:
+        # Add back some insignificant zeroes to the left of the number, if needed, so that we can make 'groups' of digits of the
+        # required length. 
+        while len(number) % required_digits != 0:
+            number = '0' + number
 
-    # This string will store the final result. 
-    result = ""
+        # This string will store the final result. 
+        result = ""
 
-    for i in range(0, len(number), required_digits):
-        # Extract a group of digits of the needed length.
-        tuple_of_digits = number[i:i + required_digits]
+        for i in range(0, len(number), required_digits):
+            # Extract a group of digits of the needed length.
+            tuple_of_digits = number[i:i + required_digits]
 
-        corresponding_digits = ""
+            corresponding_digits = ""
 
-        for key in table:
-            # Look for the corresponding configuration in the table.
-            if table[key][0] == tuple_of_digits:
-                corresponding_digits = table[key][1]
-        
-        # Concatenate the corresponding group of digits to the result.
-        result += corresponding_digits
+            for key in table:
+                # Look for the corresponding configuration in the table.
+                if table[key][0] == tuple_of_digits:
+                    corresponding_digits = table[key][1]
+            
+            # Concatenate the corresponding group of digits to the result.
+            result += corresponding_digits
+
+    else:
+        result = number
     
     # Return the result. 
     return result
 
 
 """
-    THE FOLLOWING ALGORITHMS ARE USED TO CONVERT NUMBERS INTO DECIMAL OR FROM DECIMAL
+    THE FOLLOWING ALGORITHMS ARE USED TO CONVERT NUMBERS INTO DECIMAL OR FROM DECIMAL 
 """
 
 

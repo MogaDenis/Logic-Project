@@ -1,4 +1,4 @@
-# This module is used to store the correspondance of the digits with their values in different bases. 
+# This module is used to store the correspondence of the digits with their values in different bases. 
 
 characters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F']
 
